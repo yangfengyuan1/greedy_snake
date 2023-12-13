@@ -9,7 +9,7 @@ void SetWindowSize(int cols, int lines,const std::string& win_title)         //�
 {
     string title_command = "title " + win_title;
     system(title_command.c_str());                    //设置窗口标题
-    char cmd[35];
+    char cmd[30];
     sprintf_s(cmd, "mode con cols=%d lines=%d", cols * 2, lines);//一个图形■占两个字符，故宽度乘以2
     system(cmd);//system(mode con cols=88 lines=88)设置窗口宽度和高度
 }

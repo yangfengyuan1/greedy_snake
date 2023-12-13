@@ -6,13 +6,17 @@
 
 void Food::DrawFood(Snake& csnake)//绘制食物
 {
-    /*利用rand函数获得坐标，并将其范围限制在2-29内，即在地图内，
+    /*利用rand函数获得坐标，并将其范围限制在2-28内，即在地图内，
     如果获得的坐标与蛇身重叠，则重新获取。
     同时每5颗食物就出现一颗限时食物*/
     while (true)
     {
-        int tmp_x = rand() % 28 +2;
-        int tmp_y = rand() % 28 +2;
+        //int tmp_x = rand() % 28 +2;
+        //int tmp_y = rand() % 28 +2;
+        int tmp_x = rand() % 30;
+        int tmp_y = rand() % 30;
+        if (tmp_x < 2) tmp_x += 2;
+        if (tmp_y < 2) tmp_y += 2;
         bool flag = false; // 标记food是否生成在蛇身上
         for (auto& point : csnake.snake)// 蛇体
         {
@@ -27,7 +31,7 @@ void Food::DrawFood(Snake& csnake)//绘制食物
         y = tmp_y;
         SetCursorPosition(x, y);
         SetColor(13);
-        std::cout << "★"; // ★❤️💖🍔🥩//选占用一个字符位置的
+        std::cout << "★"; // ★❤️💖🍔🥩
         ++cnt;
         cnt %= 5;
         if (cnt == 0)// 每吃5个小的，触发奖励
@@ -46,8 +50,12 @@ void Food::DrawBigFood(Snake& csnake)// 绘制限时食物
     progress_bar = 42;
     while (true)
     {
-        int tmp_x = rand() % 28 + 2;
-        int tmp_y = rand() % 28 + 2;
+        //int tmp_x = rand() % 28 + 2;
+        //int tmp_y = rand() % 28 + 2;
+        int tmp_x = rand() % 30;
+        int tmp_y = rand() % 30;
+        if (tmp_x < 2) tmp_x += 2;
+        if (tmp_y < 2) tmp_y += 2;
         bool flag = false;
         for (auto& point : csnake.snake)
         {

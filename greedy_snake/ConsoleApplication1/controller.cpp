@@ -9,6 +9,10 @@
 #include "map.h"
 #include "snake.h"
 #include "food.h"
+#include "leaderboard.h"
+
+Ranklist r;
+Board b;
 
 void Controller::Start()              // 开始界面
 {
@@ -146,10 +150,10 @@ void Controller::Select()//选择界面，确定speed值
             }
             break;
 
-        case 13://Enter回车键
+        case 13:// Enter回车键
             flag = true;
             break;
-        default://无效按键
+        default:// 无效按键
             break;
         }
         if (flag) break;//输入Enter回车键确认，退出检查输入循环
@@ -217,9 +221,9 @@ void Controller::DrawGame()//绘制游戏界面
     SetCursorPosition(37, 8);
     std::cout << "     0";
     SetCursorPosition(33, 13);
-    std::cout << " 方向键移动";
+    std::cout << "方向键移动";
     SetCursorPosition(33, 15);
-    std::cout << " ESC键暂停";
+    std::cout << "ESC键暂停";
 }
 
 int Controller::PlayGame()// 游戏二级循环
@@ -300,6 +304,8 @@ int Controller::PlayGame()// 游戏二级循环
         return 1;// 重新开始
     case 2:
         return 2;// 退出游戏
+    //case 3:
+    //    return 3;// 跳出输入信息框
     default:
         return 2;
     }
@@ -478,114 +484,194 @@ int Controller::GameOver()// 游戏结束界面
     SetColor(11);
     //SetCursorPosition(10, 8);
     //std::cout << "                                               ";
-    SetCursorPosition(10, 8);
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-    Sleep(30);
-    SetCursorPosition(9, 9);
-    std::cout << " ┃                 游戏结束                 ┃";
-    Sleep(30);
-    SetCursorPosition(9, 10);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 11);
-    std::cout << " ┃              很遗憾！你输了              ┃";
-    Sleep(30);
-    SetCursorPosition(9, 12);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 13);
-    std::cout << " ┃             你的分数为：                 ┃";
-    SetCursorPosition(24, 13);
-    std::cout << score;
-    Sleep(30);
-    SetCursorPosition(9, 14);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 15);
-    std::cout << " ┃             是否再来一局？               ┃";
-    Sleep(30);
-    SetCursorPosition(9, 16);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 17);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 18);
-    std::cout << " ┃          确定            拒绝            ┃";
-    Sleep(30);
-    SetCursorPosition(9, 19);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    SetCursorPosition(9, 20);
-    std::cout << " ┃                                          ┃";
-    Sleep(30);
-    //SetCursorPosition(10, 21);
-    //std::cout << "                                               ";
-    SetCursorPosition(10, 21);
-    std::cout <<   "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-
-    Sleep(100);
-    SetCursorPosition(15, 18);
-    SetBackColor();
-    std::cout << "确定";
-    SetCursorPosition(0, 31);
-
-    /*选择部分*/
-    int ch;
-    int tmp_key = 1;
-    bool flag = false;
-    while ((ch = (int)_getch()))
+    
+    while (1)
     {
-        switch (ch)
-        {
-        case 75://LEFT
-            if (tmp_key > 1)
-            {
-                SetCursorPosition(15, 18);
-                SetBackColor();
-                std::cout << "确定";
-                SetCursorPosition(23, 18);
-                SetColor(11);
-                std::cout << "拒绝";
-                --tmp_key;
-            }
-            break;
+        SetCursorPosition(10, 8);
+        std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+        Sleep(30);
+        SetCursorPosition(9, 9);
+        std::cout << " ┃                 游戏结束                 ┃";
+        Sleep(30);
+        SetCursorPosition(9, 10);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 11);
+        std::cout << " ┃              很遗憾！你输了              ┃";
+        Sleep(30);
+        SetCursorPosition(9, 12);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 13);
+        std::cout << " ┃             你的分数为：                 ┃";
+        SetCursorPosition(24, 13);
+        std::cout << score;
+        Sleep(30);
+        SetCursorPosition(9, 14);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 15);
+        std::cout << " ┃             是否再来一局？               ┃";
+        Sleep(30);
+        SetCursorPosition(9, 16);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 17);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 18);
+        std::cout << " ┃          确定            拒绝            ┃";
+        Sleep(30);
+        SetCursorPosition(9, 19);
+        std::cout << " ┃                                          ┃";
+        Sleep(30);
+        SetCursorPosition(9, 20);
+        std::cout << " ┃          成绩计入排行榜？                ┃";
+        Sleep(30);
+        //SetCursorPosition(10, 21);
+        //std::cout << "                                               ";
+        SetCursorPosition(10, 21);
+        std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 
-        case 77://RIGHT
-            if (tmp_key < 2)
-            {
-                SetCursorPosition(23, 18);
-                SetBackColor();
-                std::cout << "拒绝";
-                SetCursorPosition(15, 18);
-                SetColor(11);
-                std::cout << "确定";
-                ++tmp_key;
-            }
-            break;
-
-        case 13://Enter
-            flag = true;
-            break;
-
-        default:
-            break;
-        }
-
+        // 传递出score
+        //int score2 = GetScore();
+        //Sleep(100);
+        SetCursorPosition(15, 18);
+        SetBackColor();
+        std::cout << "确定";
+        SetCursorPosition(23, 18);
+        SetColor(11);
+        std::cout << "拒绝";
+        SetCursorPosition(15, 20);
+        SetColor(11);
+        std::cout << "成绩计入排行榜？";
         SetCursorPosition(0, 31);
-        if (flag) {
-            break;
+
+        /*选择部分*/
+        int ch;
+        int tmp_key = 1; //
+        bool flag = false;
+        while ((ch = (int)_getch()))
+        {
+            switch (ch)
+            {
+            case 75:// LEFT
+                if (tmp_key > 1) // 
+                {
+                    switch (tmp_key)
+                    {
+                    case 2:
+                        SetCursorPosition(15, 18);
+                        SetBackColor();
+                        std::cout << "确定";
+                        SetCursorPosition(23, 18);
+                        SetColor(11);
+                        std::cout << "拒绝";
+                        /*SetCursorPosition(15, 20);
+                        SetColor(11);
+                        std::cout << "成绩计入排行榜？";*/
+                        --tmp_key;
+                        break;
+                    case 3:
+                        /*SetCursorPosition(15, 18);
+                        SetColor(11);
+                        std::cout << "确定";*/
+                        SetCursorPosition(23, 18);
+                        SetBackColor();
+                        std::cout << "拒绝";
+                        SetCursorPosition(15, 20);
+                        SetColor(11);
+                        std::cout << "成绩计入排行榜？";
+                        --tmp_key;
+                        break;
+                    }
+                }
+                break;
+
+            case 77:// RIGHT
+                if (tmp_key < 3)
+                {
+                    switch (tmp_key)
+                    {
+                    case 1:
+                        SetCursorPosition(23, 18);
+                        SetBackColor();
+                        std::cout << "拒绝";
+                        SetCursorPosition(15, 18);
+                        SetColor(11);
+                        std::cout << "确定";
+                        /*SetCursorPosition(15, 20);
+                        SetColor(11);
+                        std::cout << "成绩计入排行榜？";*/
+                        ++tmp_key;
+                        break;
+                    case 2:
+                        SetCursorPosition(23, 18);
+                        SetColor(11);
+                        std::cout << "拒绝";
+                        /*SetCursorPosition(15, 18);
+                        SetColor(11);
+                        std::cout << "确定";*/
+                        SetCursorPosition(15, 20);
+                        SetBackColor();
+                        std::cout << "成绩计入排行榜？";
+                        ++tmp_key;
+                        break;
+                    }
+                }
+                break;
+
+            case 13:// Enter
+                flag = true;
+                break;
+
+            default:
+                break;
+            }
+
+            SetCursorPosition(0, 31);
+            if (flag) {
+                break;
+            }
         }
+
+        SetColor(11);
+        switch (tmp_key)
+        {
+        case 1:
+            return 1;//重新开始
+        case 2:
+            return 2;//退出游戏
+        case 3:
+            break;//成绩计入排行榜
+        default:
+            return 2;
+        }
+        
+        // 跳出输入信息界面，输入name，回车结束
+        
+        r.InitInfo();       // 打印输入姓名的框
+        r.Get_name(score);  // 输入名字，打印分数，
+        r.UpdateList();     // 重新排列名次
+        //if((int)_getch() == 13);
+        //Sleep(1000);
+        
+        b.Init_leaderboard();// 生成框
+        b.Print_board(); // 打印框        
+        r.PrintRank(8);// 打印排名信息
+        r.Search();     // 搜集自己的排名，打印自己的信息
+        
+        if ((int)_getch() == 13);// 按回车结束
+        system("cls");
+        // 弹出排行榜，包含自己排名，回车结束，返回到失败界面
+
+        
     }
 
-    SetColor(11);
-    switch (tmp_key)
-    {
-    case 1:
-        return 1;//重新开始
-    case 2:
-        return 2;//退出游戏
-    default:
-        return 1;
-    }
+
+ 
+
+
 }
+
+

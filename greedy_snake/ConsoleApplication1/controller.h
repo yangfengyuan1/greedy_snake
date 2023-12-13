@@ -16,6 +16,8 @@ public:
     int Menu();
     void Game();
     int GameOver();
+    //void GetScore(); // 将score传递出来
+    int score1;
 private:
     int speed;
     int key;
